@@ -1,0 +1,10 @@
+/* Base do app. As cores da marca chegam por variáveis definidas em config/loja.js */
+:root{--cor:#E8590C;--cor2:#1C1917;--escuro:#8A3B12}
+html,body{margin:0;background:#E7E3DE;font-family:'Onest',system-ui,sans-serif;color:#1C1917;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.9}
+input,textarea,button{font-family:inherit}
+::-webkit-scrollbar{display:none}
+
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:#F7F4F0;padding-bottom:110px;position:relative}

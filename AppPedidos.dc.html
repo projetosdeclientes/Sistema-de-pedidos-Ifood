@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="loja.js"></script>
+<style>
+html,body{margin:0;background:#E7E3DE;font-family:'Onest',system-ui,sans-serif;color:#1C1917;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.9}
+input,textarea,button{font-family:inherit}
+::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="max-width:480px;margin:0 auto;min-height:100vh;background:#F7F4F0;padding-bottom:110px;position:relative">
+
+  <sc-if value="{{ fechado }}" hint-placeholder-val="{{ false }}">
+    <div style="background:#1C1917;color:#fff;font-size:13px;line-height:1.35;padding:10px 20px;display:flex;gap:10px;align-items:center">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+      <span style="text-wrap:pretty">Estamos fechados agora, mas você pode deixar seu pedido para quando abrirmos.</span>
+    </div>
+  </sc-if>
+
+  <div style="padding:20px 20px 0;display:flex;align-items:center;gap:14px">
+    <div style="width:58px;height:58px;border-radius:18px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.04)">
+      <sc-if value="{{ hasLogo }}" hint-placeholder-val="{{ false }}"><img src="{{ logo }}" alt="" style="width:100%;height:100%;object-fit:cover"></sc-if>
+      <sc-if value="{{ noLogo }}" hint-placeholder-val="{{ true }}"><span style="font-weight:700;font-size:20px;color:{{ acc }}">{{ iniciais }}</span></sc-if>
+    </div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.2">{{ loja.nome }}</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:13px;color:#6B635C;margin-top:3px;white-space:nowrap;overflow:hidden">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M12 21s-7-6.2-7-12a7 7 0 1 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+        <span style="overflow:hidden;text-overflow:ellipsis">{{ loja.endereco }}</span>
+      </div>
+    </div>
+    <a href="{{ waContato }}" target="_blank" title="Fale conosco no WhatsApp" style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0">
+      <span style="width:46px;height:46px;border-radius:50%;background:#1C1917;color:#fff;display:flex;align-items:center;justify-content:center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"></path></svg>
+      </span>
+      <span style="font-size:11px;font-weight:500;color:#57504A;white-space:nowrap">Fale conosco</span>
+    </a>
+  </div>
+
+  <div style="margin:16px 20px 0;background:#EFEAE4;border-radius:18px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:12px 0">
+    <div style="display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;padding:0 4px">
+      <div style="display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600"><span style="width:7px;height:7px;border-radius:50%;background:{{ statusCor }}"></span>{{ statusTxt }}</div>
+      <div style="font-size:11px;color:#6B635C">{{ statusSub }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;padding:0 4px;border-left:1px solid #DDD6CE">
+      <div style="font-size:13px;font-weight:600">{{ loja.tempoEntrega }}</div>
+      <div style="font-size:11px;color:#6B635C">Entrega</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;padding:0 4px;border-left:1px solid #DDD6CE">
+      <div style="font-size:13px;font-weight:600">{{ loja.tempoRetirada }}</div>
+      <div style="font-size:11px;color:#6B635C">Retirada</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center;padding:0 4px;border-left:1px solid #DDD6CE">
+      <div style="font-size:13px;font-weight:600">{{ taxaFmt }}</div>
+      <div style="font-size:11px;color:#6B635C">Taxa</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ true }}">
+    <div style="margin:16px 20px 0;height:150px;border-radius:22px;overflow:hidden;position:relative;background:#2A2320">
+      <img src="{{ loja.banner.imagem }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,14,10,.82) 0%,rgba(20,14,10,.35) 60%,rgba(20,14,10,0) 100%)"></div>
+      <div style="position:relative;padding:20px;display:flex;flex-direction:column;gap:6px;height:100%;justify-content:center;max-width:70%">
+        <div style="color:#fff;font-size:20px;font-weight:700;line-height:1.2;text-wrap:pretty">{{ loja.banner.titulo }}</div>
+        <div style="color:#F2E9E1;font-size:13px">{{ loja.banner.subtitulo }}</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasUltimo }}" hint-placeholder-val="{{ false }}">
+    <div style="margin:12px 20px 0;background:#fff;border-radius:18px;padding:12px 12px 12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 0 0 1px rgba(0,0,0,.04)">
+      <span style="width:40px;height:40px;border-radius:50%;background:#EFEAE4;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1917" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l3 2"></path></svg>
+      </span>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+        <div style="font-size:14px;font-weight:600">Repetir seu último pedido</div>
+        <div style="font-size:13px;color:#6B635C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ ultimoResumo }}</div>
+      </div>
+      <button onClick="{{ repetir }}" style="height:36px;padding:0 14px;border-radius:18px;border:0;background:#1C1917;color:#fff;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0">Adicionar</button>
+    </div>
+  </sc-if>
+
+  <div style="margin:16px 20px 0;height:50px;background:#fff;border-radius:25px;display:flex;align-items:center;gap:10px;padding:0 18px;box-shadow:0 0 0 1px rgba(0,0,0,.05)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A817A" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+    <input value="{{ q }}" onChange="{{ setQ }}" placeholder="Buscar no cardápio" style="flex:1;border:0;outline:0;background:transparent;font-size:15px;color:#1C1917;min-width:0">
+  </div>
+
+  <div style="display:flex;gap:8px;overflow-x:auto;padding:16px 20px 4px">
+    <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+      <button onClick="{{ c.pick }}" style="flex-shrink:0;height:38px;padding:0 16px;border-radius:19px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font-size:14px;font-weight:500;cursor:pointer">{{ c.nome }}</button>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ showDestaques }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:18px 20px 10px;font-size:18px;font-weight:700;letter-spacing:-.01em">Mais pedidos</div>
+    <div style="display:flex;gap:12px;overflow-x:auto;padding:0 20px 6px">
+      <sc-for list="{{ destaques }}" as="p" hint-placeholder-count="3">
+        <div onClick="{{ p.open }}" style="flex-shrink:0;width:168px;background:#fff;border-radius:20px;padding:8px;cursor:pointer;box-shadow:0 0 0 1px rgba(0,0,0,.04)">
+          <div style="height:120px;border-radius:14px;overflow:hidden;background:#EFEAE4"><img src="{{ p.imagem }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:10px 4px 4px;display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.nome }}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:14px;font-weight:600">{{ p.precoFmt }}</span>
+              <button onClick="{{ p.addQuick }}" aria-label="Adicionar" style="width:32px;height:32px;border-radius:50%;border:0;background:{{ acc }};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"></path></svg></button>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showCombos }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:20px 20px 10px;font-size:18px;font-weight:700;letter-spacing:-.01em">Combos</div>
+    <div style="display:flex;flex-direction:column;gap:14px;padding:0 20px">
+      <sc-for list="{{ combos }}" as="p" hint-placeholder-count="2">
+        <div style="background:#fff;border-radius:22px;padding:8px;box-shadow:0 0 0 1px rgba(0,0,0,.04)">
+          <div onClick="{{ p.open }}" style="height:150px;border-radius:16px;overflow:hidden;background:#EFEAE4;position:relative;cursor:pointer">
+            <img src="{{ p.imagem }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+            <span style="position:absolute;top:10px;left:10px;height:28px;padding:0 12px;border-radius:14px;background:{{ acc }};color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center">{{ p.economiaTxt }}</span>
+          </div>
+          <div style="padding:12px 8px 6px;display:flex;flex-direction:column;gap:4px">
+            <div onClick="{{ p.open }}" style="font-size:17px;font-weight:700;cursor:pointer">{{ p.nome }}</div>
+            <div style="font-size:13px;color:#6B635C;line-height:1.4;text-wrap:pretty">{{ p.inclui }}</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+              <span style="font-size:14px;color:#8A817A;text-decoration:line-through">{{ p.precoOriginalFmt }}</span>
+              <span style="font-size:20px;font-weight:700;flex:1">{{ p.precoFmt }}</span>
+              <button onClick="{{ p.addQuick }}" style="height:44px;padding:0 18px;border-radius:22px;border:0;background:{{ acc }};color:#fff;font-size:14px;font-weight:600;cursor:pointer">Adicionar</button>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showLista }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:22px 20px 6px;font-size:18px;font-weight:700;letter-spacing:-.01em">{{ tituloLista }}</div>
+  </sc-if>
+  <sc-if value="{{ vazio }}" hint-placeholder-val="{{ false }}">
+    <div style="margin:24px 20px 0;padding:32px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;background:#EFEAE4;border-radius:22px">
+      <span style="width:48px;height:48px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B635C" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></span>
+      <div style="font-size:15px;font-weight:600">Nenhum item encontrado</div>
+      <div style="font-size:13px;color:#6B635C">Tente outra palavra ou categoria.</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isLista }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-direction:column;padding:0 20px">
+      <sc-for list="{{ lista }}" as="p" hint-placeholder-count="4">
+        <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #E8E2DB;align-items:center">
+          <div onClick="{{ p.open }}" style="width:88px;height:88px;border-radius:16px;overflow:hidden;background:#EFEAE4;flex-shrink:0;cursor:pointer"><img src="{{ p.imagem }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div onClick="{{ p.open }}" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;cursor:pointer">
+            <div style="font-size:15px;font-weight:600">{{ p.nome }}</div>
+            <div style="font-size:13px;color:#6B635C;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ p.descricao }}</div>
+            <div style="font-size:15px;font-weight:600;margin-top:2px">{{ p.precoFmt }}</div>
+          </div>
+          <sc-if value="{{ p.noQty }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ p.addQuick }}" aria-label="Adicionar" style="width:44px;height:44px;border-radius:50%;border:1px solid #E0D9D1;background:#fff;color:#1C1917;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg></button>
+          </sc-if>
+          <sc-if value="{{ p.hasQty }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:2px;background:{{ acc }};border-radius:22px;padding:4px;flex-shrink:0">
+              <button onClick="{{ p.inc }}" aria-label="Mais" style="width:36px;height:36px;border:0;background:transparent;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"></path></svg></button>
+              <span style="color:#fff;font-weight:700;font-size:14px">{{ p.qty }}</span>
+              <button onClick="{{ p.dec }}" aria-label="Menos" style="width:36px;height:36px;border:0;background:transparent;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path></svg></button>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isGrade }}" hint-placeholder-val="{{ false }}">
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:6px 20px 0">
+      <sc-for list="{{ lista }}" as="p" hint-placeholder-count="4">
+        <div style="background:#fff;border-radius:20px;padding:8px;box-shadow:0 0 0 1px rgba(0,0,0,.04);display:flex;flex-direction:column">
+          <div onClick="{{ p.open }}" style="aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:#EFEAE4;cursor:pointer"><img src="{{ p.imagem }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div onClick="{{ p.open }}" style="padding:10px 4px 6px;font-size:14px;font-weight:600;cursor:pointer;flex:1">{{ p.nome }}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px 4px">
+            <span style="font-size:14px;font-weight:600">{{ p.precoFmt }}</span>
+            <sc-if value="{{ p.noQty }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ p.addQuick }}" aria-label="Adicionar" style="width:36px;height:36px;border-radius:50%;border:0;background:{{ acc }};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"></path></svg></button>
+            </sc-if>
+            <sc-if value="{{ p.hasQty }}" hint-placeholder-val="{{ false }}">
+              <span style="min-width:36px;height:36px;border-radius:18px;background:{{ acc }};color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;padding:0 10px">{{ p.qty }}×</span>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasCart }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:12px 16px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(247,244,240,0),#F7F4F0 35%);z-index:10">
+      <button onClick="{{ openCart }}" style="width:100%;height:58px;border-radius:29px;border:0;background:#1C1917;color:#fff;display:flex;align-items:center;gap:12px;padding:0 8px 0 22px;cursor:pointer;font-size:16px;font-weight:600">
+        <span style="flex:1;text-align:left">Ver sacola</span>
+        <span style="font-size:14px;color:#D6CFC8;font-weight:500">{{ countTxt }}</span>
+        <span style="height:44px;padding:0 16px;border-radius:22px;background:{{ acc }};display:flex;align-items:center">{{ subtotalFmt }}</span>
+      </button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ hasDetail }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDetail }}" style="position:fixed;inset:0;background:rgba(20,14,10,.5);z-index:20"></div>
+    <div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;max-height:92%;overflow-y:auto;background:#F7F4F0;border-radius:28px 28px 0 0;z-index:21">
+      <div style="height:240px;position:relative;background:#EFEAE4">
+        <img src="{{ det.imagem }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+        <button onClick="{{ closeDetail }}" aria-label="Fechar" style="position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1917" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+      </div>
+      <div style="padding:20px 20px 8px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:12px;font-weight:600;color:#8A3B12;text-transform:uppercase;letter-spacing:.06em">{{ det.categoria }}</div>
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.01em">{{ det.nome }}</div>
+        <div style="font-size:15px;color:#57504A;line-height:1.5;text-wrap:pretty">{{ det.descricao }}</div>
+        <div style="font-size:20px;font-weight:700">{{ det.precoFmt }}</div>
+      </div>
+
+      <sc-if value="{{ detHasGrupos }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:14px 20px 0;font-size:17px;font-weight:700">Monte do seu jeito</div>
+        <div style="padding:10px 20px 0;display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ detGrupos }}" as="g" hint-placeholder-count="3">
+            <div style="background:#fff;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+                  <div style="font-size:15px;font-weight:600">{{ g.titulo }}</div>
+                  <div style="font-size:12px;color:#6B635C">{{ g.sub }}</div>
+                </div>
+                <sc-if value="{{ g.obrigatorio }}" hint-placeholder-val="{{ false }}">
+                  <span style="height:24px;padding:0 10px;border-radius:12px;background:#EFEAE4;font-size:11px;font-weight:600;display:flex;align-items:center;color:#57504A">Obrigatório</span>
+                </sc-if>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ g.opcoes }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.toggle }}" style="min-height:42px;padding:0 14px;border-radius:21px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;cursor:pointer">
+                    <sc-if value="{{ o.on }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12.5 10 17 19 7"></path></svg></sc-if>
+                    <span>{{ o.nome }}</span>
+                    <sc-if value="{{ o.hasPreco }}" hint-placeholder-val="{{ false }}"><span style="font-weight:600;color:{{ o.pc }}">{{ o.precoTxt }}</span></sc-if>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <div style="padding:16px 20px 0;display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:15px;font-weight:600">Alguma observação?</label>
+        <textarea value="{{ detObs }}" onChange="{{ setDetObs }}" rows="2" placeholder="Ex: pão sem gergelim, molho à parte…" style="border:1px solid #E0D9D1;border-radius:14px;padding:12px 14px;font-size:15px;background:#fff;resize:none;outline:0;color:#1C1917"></textarea>
+      </div>
+
+      <div style="position:sticky;bottom:0;background:#F7F4F0;margin-top:16px;padding:12px 20px calc(16px + env(safe-area-inset-bottom));display:flex;gap:12px;align-items:center;box-shadow:0 -1px 0 #E8E2DB">
+        <div style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #E0D9D1;border-radius:28px;height:56px;padding:0 6px">
+          <button onClick="{{ detDec }}" aria-label="Menos" style="width:44px;height:44px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1917" stroke-width="2.2"><path d="M5 12h14"></path></svg></button>
+          <span style="min-width:20px;text-align:center;font-weight:700;font-size:16px">{{ detQty }}</span>
+          <button onClick="{{ detInc }}" aria-label="Mais" style="width:44px;height:44px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1917" stroke-width="2.2"><path d="M12 5v14M5 12h14"></path></svg></button>
+        </div>
+        <button onClick="{{ detAdd }}" style="flex:1;height:56px;border-radius:28px;border:0;background:{{ acc }};color:#fff;font-size:16px;font-weight:600;cursor:pointer">Adicionar • {{ detTotalFmt }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeCart }}" style="position:fixed;inset:0;background:rgba(20,14,10,.5);z-index:20"></div>
+    <div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;max-height:94%;overflow-y:auto;background:#F7F4F0;border-radius:28px 28px 0 0;z-index:21">
+      <div style="position:sticky;top:0;background:#F7F4F0;padding:18px 20px 12px;display:flex;align-items:center;justify-content:space-between;z-index:1">
+        <div style="font-size:20px;font-weight:700">Sua sacola</div>
+        <button onClick="{{ closeCart }}" aria-label="Fechar" style="width:44px;height:44px;border-radius:50%;border:0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 0 1px rgba(0,0,0,.05)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1917" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+      </div>
+
+      <div style="padding:0 20px;display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ itens }}" as="it" hint-placeholder-count="2">
+          <div style="background:#fff;border-radius:18px;padding:12px;display:flex;gap:12px">
+            <div style="width:60px;height:60px;border-radius:12px;overflow:hidden;background:#EFEAE4;flex-shrink:0"><img src="{{ it.imagem }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+              <div style="display:flex;align-items:flex-start;gap:6px">
+                <div style="flex:1;font-size:15px;font-weight:600;padding-top:2px">{{ it.nome }}</div>
+                <button onClick="{{ it.remove }}" aria-label="Remover item" style="width:40px;height:40px;margin:-8px -8px 0 0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6B635C" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button>
+              </div>
+              <sc-if value="{{ it.hasDesc }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#6B635C;line-height:1.4">{{ it.desc }}</div></sc-if>
+              <sc-if value="{{ it.hasObs }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#6B635C;line-height:1.4">Obs: {{ it.obs }}</div></sc-if>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+                <div style="font-size:15px;font-weight:600">{{ it.totalFmt }}</div>
+                <div style="display:flex;align-items:center;gap:2px;border:1px solid #E0D9D1;border-radius:22px;height:40px;padding:0 2px">
+                  <button onClick="{{ it.dec }}" aria-label="Menos" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1917" stroke-width="2.4"><path d="M5 12h14"></path></svg></button>
+                  <span style="min-width:16px;text-align:center;font-weight:700;font-size:14px">{{ it.qty }}</span>
+                  <button onClick="{{ it.inc }}" aria-label="Mais" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1C1917" stroke-width="2.4"><path d="M12 5v14M5 12h14"></path></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+
+        <div style="font-size:15px;font-weight:700;margin-top:14px">Como quer receber?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;background:#EFEAE4;border-radius:26px;padding:4px;gap:4px">
+          <button onClick="{{ setEntrega }}" style="height:44px;border-radius:22px;border:0;background:{{ tEntBg }};color:{{ tEntFg }};font-size:14px;font-weight:600;cursor:pointer">Entrega</button>
+          <button onClick="{{ setRetirada }}" style="height:44px;border-radius:22px;border:0;background:{{ tRetBg }};color:{{ tRetFg }};font-size:14px;font-weight:600;cursor:pointer">Retirar no local</button>
+        </div>
+
+        <sc-if value="{{ isRetirada }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border-radius:18px;padding:14px;display:flex;gap:12px;align-items:flex-start">
+            <span style="width:40px;height:40px;border-radius:50%;background:#EFEAE4;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1C1917" stroke-width="2"><path d="M3 9l1.5-5h15L21 9M3 9v11h18V9M3 9h18M9 20v-6h6v6"></path></svg></span>
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0">
+              <div style="font-size:14px;font-weight:600">Retirar em {{ loja.nome }}</div>
+              <div style="font-size:13px;color:#57504A;line-height:1.4">{{ loja.endereco }}</div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;margin-top:4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Pronto em {{ loja.tempoRetirada }}</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <input value="{{ form.nome }}" onChange="{{ setNome }}" placeholder="Seu nome" style="height:52px;border:1px solid #E0D9D1;border-radius:14px;padding:0 14px;font-size:15px;background:#fff;outline:0;color:#1C1917;margin-top:4px">
+        <sc-if value="{{ isEntrega }}" hint-placeholder-val="{{ true }}">
+          <textarea value="{{ form.endereco }}" onChange="{{ setEndereco }}" rows="2" placeholder="Endereço completo (rua, número, bairro, complemento)" style="border:1px solid #E0D9D1;border-radius:14px;padding:14px;font-size:15px;background:#fff;resize:none;outline:0;color:#1C1917;width:100%"></textarea>
+        </sc-if>
+
+        <div style="font-size:15px;font-weight:700;margin-top:14px">Pagamento</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ pags }}" as="pg" hint-placeholder-count="4">
+            <button onClick="{{ pg.pick }}" style="height:42px;padding:0 16px;border-radius:21px;border:1px solid {{ pg.bd }};background:{{ pg.bg }};color:{{ pg.fg }};font-size:14px;font-weight:500;cursor:pointer">{{ pg.nome }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ isDinheiro }}" hint-placeholder-val="{{ false }}">
+          <input value="{{ form.troco }}" onChange="{{ setTroco }}" placeholder="Troco para quanto?" style="height:52px;border:1px solid #E0D9D1;border-radius:14px;padding:0 14px;font-size:15px;background:#fff;outline:0;color:#1C1917">
+        </sc-if>
+        <textarea value="{{ form.obs }}" onChange="{{ setObs }}" rows="2" placeholder="Observações do pedido (opcional)" style="border:1px solid #E0D9D1;border-radius:14px;padding:14px;font-size:15px;background:#fff;resize:none;outline:0;color:#1C1917;margin-top:6px"></textarea>
+
+        <div style="font-size:15px;font-weight:700;margin-top:14px">Cupom de desconto</div>
+        <sc-if value="{{ noCupom }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:8px;height:52px;background:#fff;border:1px solid {{ cupomBd }};border-radius:14px;padding:4px 4px 4px 14px;align-items:center">
+            <input value="{{ cupomIn }}" onChange="{{ setCupomIn }}" placeholder="Digite o código" style="flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:15px;color:#1C1917;text-transform:uppercase;letter-spacing:.04em">
+            <button onClick="{{ aplicarCupom }}" style="height:42px;padding:0 18px;border-radius:11px;border:0;background:#1C1917;color:#fff;font-size:14px;font-weight:600;cursor:pointer">Aplicar</button>
+          </div>
+          <sc-if value="{{ cupomErro }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#B91C1C;padding:0 4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>{{ cupomErro }}</div>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ hasCupom }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:10px;min-height:52px;background:#fff;border:1px solid #BBDCC6;border-radius:14px;padding:4px 4px 4px 14px;align-items:center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.4" style="flex-shrink:0"><path d="M5 12.5 10 17 19 7"></path></svg>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+              <span style="font-size:14px;font-weight:700;letter-spacing:.04em">{{ cupom }}</span>
+              <span style="font-size:12px;color:#15803D">{{ cupomDescTxt }}</span>
+            </div>
+            <button onClick="{{ removerCupom }}" style="height:42px;padding:0 14px;border-radius:11px;border:0;background:transparent;color:#57504A;font-size:13px;font-weight:600;cursor:pointer">Remover</button>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;padding:16px;background:#fff;border-radius:18px;font-size:14px">
+          <div style="display:flex;justify-content:space-between;color:#57504A"><span>Subtotal</span><span>{{ subtotalFmt }}</span></div>
+          <sc-if value="{{ isEntrega }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;justify-content:space-between;color:#57504A"><span>Taxa de entrega</span><span>{{ taxaAplicFmt }}</span></div>
+          </sc-if>
+          <sc-if value="{{ hasCupom }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:space-between;color:#15803D;font-weight:500"><span>Desconto</span><span>- {{ descontoFmt }}</span></div>
+          </sc-if>
+          <div style="display:flex;justify-content:space-between;font-size:17px;font-weight:700;padding-top:8px;border-top:1px solid #EFEAE4"><span>Total</span><span>{{ totalFmt }}</span></div>
+        </div>
+      </div>
+
+      <div style="position:sticky;bottom:0;background:#F7F4F0;padding:14px 20px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;margin-top:6px">
+        <sc-if value="{{ sendHint }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:13px;color:#8A3B12;text-align:center">{{ sendHint }}</div>
+        </sc-if>
+        <sc-if value="{{ canSend }}" hint-placeholder-val="{{ false }}">
+          <a href="{{ waPedido }}" target="_blank" onClick="{{ onSent }}" style="height:58px;border-radius:29px;background:#128C4A;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:600">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"></path></svg>
+            {{ sendLabel }}
+          </a>
+        </sc-if>
+        <sc-if value="{{ cantSend }}" hint-placeholder-val="{{ true }}">
+          <div style="height:58px;border-radius:29px;background:#DDD6CE;color:#6B635C;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">{{ sendLabel }}</div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ enviado }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#F7F4F0;z-index:25;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;gap:14px">
+      <span style="width:96px;height:96px;border-radius:50%;background:{{ acc }};color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:8px"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12.5 10 17 19 7"></path></svg></span>
+      <div style="font-size:26px;font-weight:700;letter-spacing:-.01em">Pedido enviado!</div>
+      <div style="font-size:15px;color:#57504A;line-height:1.5;max-width:300px;text-wrap:pretty">Confirme com a {{ loja.nome }} no WhatsApp para começarmos o preparo.</div>
+      <a href="{{ lastWa }}" target="_blank" style="margin-top:14px;width:100%;max-width:320px;height:56px;border-radius:28px;background:#128C4A;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:600">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"></path></svg>
+        Abrir WhatsApp
+      </a>
+      <button onClick="{{ voltar }}" style="height:44px;padding:0 16px;border:0;background:transparent;color:#57504A;font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Voltar ao cardápio</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#1C1917;color:#fff;padding:12px 18px;border-radius:22px;font-size:14px;font-weight:500;z-index:30;white-space:nowrap">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;cena&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;home&quot;,&quot;home-repetir&quot;,&quot;fechado&quot;,&quot;produto&quot;,&quot;sacola&quot;,&quot;sacola-cupom&quot;,&quot;sacola-cupom-invalido&quot;,&quot;sacola-retirada&quot;,&quot;sacola-fechado&quot;,&quot;enviado&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Demonstração&quot;},&quot;logoUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marca&quot;},&quot;whatsapp&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marca&quot;},&quot;corDestaque&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E8590C&quot;,&quot;options&quot;:[&quot;#E8590C&quot;,&quot;#C81E4A&quot;,&quot;#1F7A4D&quot;,&quot;#2451B7&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marca&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;lista&quot;,&quot;grade&quot;],&quot;default&quot;:&quot;lista&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;mostrarBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  state = { loja: null, cat: 'Todos', q: '', lines: [], ultimo: [], detail: null, sel: {}, detQty: 1, detObs: '',
+    cartOpen: false, toast: '', cupomIn: '', cupom: '', cupomErro: '', enviado: false, lastWa: '', fechado: false,
+    form: { nome: '', tipo: 'entrega', endereco: '', pagamento: '', troco: '', obs: '' } };
+  componentDidMount() {
+    const load = () => {
+      if (!window.LOJA) return (this._t = setTimeout(load, 40));
+      const loja = window.LOJA, form = { ...this.state.form, pagamento: (loja.pagamentos || [])[0] || '' };
+      if (this.props.cena) { const p = this.preset(this.props.cena, loja); return this.setState({ loja, ...p, form: { ...form, ...(p.form || {}) } }); }
+      let sv = {};
+      try { sv = JSON.parse(localStorage.getItem(this.key(loja)) || '{}'); } catch (e) {}
+      this.setState({ loja, lines: sv.lines || [], ultimo: sv.ultimo || [], form: { ...form, ...(sv.form || {}) } });
+    };
+    load();
+  }
+  componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._tt); }
+  key(l) { return 'pedido-wa2-' + (l.nome || 'loja'); }
+  setState(u, cb) { super.setState(u, () => { this.save(); cb && cb(); }); }
+  save() {
+    const s = this.state; if (!s.loja || this.props.cena) return;
+    try { localStorage.setItem(this.key(s.loja), JSON.stringify({ lines: s.lines, ultimo: s.ultimo, form: { ...s.form, obs: '' } })); } catch (e) {}
+  }
+  L(id, qty, sel = {}, obs = '') { return { key: id + '|' + JSON.stringify(sel) + '|' + obs, id, qty, sel, obs }; }
+  preset(c, loja) {
+    const bg = { ponto: ['Ao ponto'] };
+    const form = { nome: 'Marina Souza', endereco: 'Rua Bela Vista, 45, ap 12 — Jardim América' };
+    const sacola = [this.L('b1', 2, { ponto: ['Ao ponto'], adicionais: ['Bacon'], remover: ['Sem cebola'] }), this.L('p1', 1), this.L('d1', 1, {}, 'Guaraná')];
+    const um = [this.L('b2', 1, { ponto: ['Bem passado'], adicionais: [], remover: ['Sem tomate'] })];
+    switch (c) {
+      case 'home-repetir': return { ultimo: [this.L('b1', 2, bg), this.L('p1', 1)] };
+      case 'fechado': return { fechado: true };
+      case 'produto': return { detail: 'b2', sel: { ponto: ['Ao ponto'], adicionais: [], remover: [] } };
+      case 'sacola': return { lines: sacola, cartOpen: true, form: { ...form, pagamento: 'Dinheiro', troco: 'R$ 100,00' } };
+      case 'sacola-cupom': return { lines: um, cartOpen: true, cupom: 'PRIMEIRA10', form };
+      case 'sacola-cupom-invalido': return { lines: um, cartOpen: true, cupomIn: 'BRASA50', cupomErro: 'Cupom inválido ou expirado.', form };
+      case 'sacola-retirada': return { lines: [um[0], this.L('p1', 1)], cartOpen: true, form: { ...form, tipo: 'retirada' } };
+      case 'sacola-fechado': return { lines: sacola.slice(0, 2), cartOpen: true, fechado: true, form };
+      case 'enviado': return { enviado: true, lastWa: 'https://wa.me/' + String(loja.whatsapp || '').replace(/\D/g, '') };
+      default: return {};
+    }
+  }
+  flash(t) { clearTimeout(this._tt); this.setState({ toast: t }); this._tt = setTimeout(() => this.setState({ toast: '' }), 1600); }
+  money(n) { return (n || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+  addLine(id, qty, sel, obs) {
+    const n = this.L(id, qty, sel, obs);
+    this.setState(s => { const lines = [...s.lines]; const i = lines.findIndex(l => l.key === n.key);
+      if (i >= 0) lines[i] = { ...lines[i], qty: lines[i].qty + qty }; else lines.push(n); return { lines }; });
+  }
+  changeLine(key, d) { this.setState(s => ({ lines: s.lines.map(l => l.key === key ? { ...l, qty: l.qty + d } : l).filter(l => l.qty > 0) })); }
+  decProduct(id) { const ls = this.state.lines.filter(l => l.id === id); if (ls.length) this.changeLine(ls[ls.length - 1].key, -1); }
+  openDetail(p) {
+    const G = this.state.loja.grupos || {}, sel = {};
+    (p.grupos || []).forEach(gid => { const g = G[gid]; if (g) sel[gid] = g.tipo === 'unico' && g.padrao ? [g.padrao] : []; });
+    this.setState({ detail: p.id, sel, detQty: 1, detObs: '' });
+  }
+  unit(p, sel) {
+    const G = this.state.loja.grupos || {};
+    return p.preco + (p.grupos || []).reduce((a, gid) => a + ((G[gid] || {}).opcoes || []).filter(o => (sel[gid] || []).includes(o.nome)).reduce((b, o) => b + (o.preco || 0), 0), 0);
+  }
+  desc(p, sel) {
+    const G = this.state.loja.grupos || {};
+    return (p.grupos || []).flatMap(gid => (sel[gid] || []).map(v => ((G[gid] || {}).prefixo || '') + v)).join(' · ');
+  }
+  renderVals() {
+    const s = this.state, P = this.props, M = n => this.money(n);
+    const loja = s.loja || { produtos: [], pagamentos: [], banner: {}, grupos: {} };
+    const G = loja.grupos || {};
+    const acc = P.corDestaque || loja.cor || '#E8590C';
+    const logo = P.logoUrl || loja.logo || '';
+    const fone = String(P.whatsapp || loja.whatsapp || '').replace(/\D/g, '');
+    const aberto = !s.fechado && loja.aberto !== false;
+    const produtos = loja.produtos || [];
+    const byId = Object.fromEntries(produtos.map(p => [p.id, p]));
+    const deco = p => {
+      const qty = s.lines.filter(l => l.id === p.id).reduce((a, l) => a + l.qty, 0);
+      const temOp = (p.grupos || []).length > 0, open = () => this.openDetail(p);
+      return { ...p, precoFmt: M(p.preco), qty, hasQty: qty > 0, noQty: qty === 0, open,
+        precoOriginalFmt: p.precoOriginal ? M(p.precoOriginal) : '',
+        economiaTxt: p.precoOriginal ? 'Economize ' + M(p.precoOriginal - p.preco) : '',
+        addQuick: e => { e && e.stopPropagation && e.stopPropagation(); if (temOp) return open(); this.addLine(p.id, 1, {}, ''); this.flash(p.nome + ' adicionado'); },
+        inc: () => temOp ? open() : this.addLine(p.id, 1, {}, ''), dec: () => this.decProduct(p.id) };
+    };
+    const catNames = ['Todos', ...Array.from(new Set(produtos.map(p => p.categoria)))];
+    const chip = on => ({ bg: on ? '#1C1917' : '#fff', fg: on ? '#fff' : '#1C1917', bd: on ? '#1C1917' : '#E0D9D1' });
+    const cats = catNames.map(nome => ({ nome, ...chip(nome === s.cat), pick: () => this.setState({ cat: nome }) }));
+    const q = s.q.trim().toLowerCase();
+    const match = p => !q || (p.nome + ' ' + (p.descricao || '') + ' ' + (p.inclui || '')).toLowerCase().includes(q);
+    const combos = produtos.filter(p => p.categoria === 'Combos' && match(p)).map(deco);
+    const showCombos = combos.length > 0 && (s.cat === 'Todos' || s.cat === 'Combos');
+    const lista = produtos.filter(p => p.categoria !== 'Combos' && (s.cat === 'Todos' || p.categoria === s.cat) && match(p)).map(deco);
+    const itens = s.lines.filter(l => byId[l.id]).map(l => {
+      const p = byId[l.id], u = this.unit(p, l.sel), d = this.desc(p, l.sel);
+      return { ...p, key: l.key, qty: l.qty, obs: l.obs, hasObs: !!l.obs, desc: d, hasDesc: !!d, unitP: u, totalFmt: M(u * l.qty),
+        inc: () => this.changeLine(l.key, 1), dec: () => this.changeLine(l.key, -1), remove: () => this.changeLine(l.key, -l.qty) };
+    });
+    const count = itens.reduce((a, i) => a + i.qty, 0);
+    const subtotal = itens.reduce((a, i) => a + i.qty * i.unitP, 0);
+    const f = s.form, entrega = f.tipo === 'entrega';
+    const taxa = entrega ? (loja.taxaEntrega || 0) : 0;
+    const cp = s.cupom && (loja.cupons || {})[s.cupom];
+    const desconto = cp ? Math.min(subtotal, Math.round((cp.tipo === 'percentual' ? subtotal * cp.valor / 100 : cp.valor) * 100) / 100) : 0;
+    const total = subtotal + taxa - desconto;
+    let sendHint = '';
+    if (!count) sendHint = '';
+    else if (entrega && loja.pedidoMinimo && subtotal < loja.pedidoMinimo) sendHint = 'Pedido mínimo para entrega: ' + M(loja.pedidoMinimo);
+    else if (!f.nome.trim()) sendHint = 'Informe seu nome para continuar.';
+    else if (entrega && !f.endereco.trim()) sendHint = 'Informe o endereço de entrega.';
+    const canSend = count > 0 && !sendHint;
+    const msg = [
+      `*${aberto ? 'Novo pedido' : 'Pedido agendado para às ' + loja.abreAs} — ${loja.nome}*`, '',
+      ...itens.map(i => `${i.qty}x ${i.nome} — ${M(i.qty * i.unitP)}` + (i.desc ? `\n   ${i.desc}` : '') + (i.obs ? `\n   _Obs: ${i.obs}_` : '')), '',
+      `Subtotal: ${M(subtotal)}`, entrega ? `Entrega: ${M(taxa)}` : null, cp ? `Cupom ${s.cupom}: - ${M(desconto)}` : null, `*Total: ${M(total)}*`, '',
+      `*Cliente:* ${f.nome.trim()}`,
+      entrega ? `*Entrega:* ${f.endereco.trim()}` : '*Retirada no local*',
+      `*Pagamento:* ${f.pagamento}` + (f.pagamento === 'Dinheiro' && f.troco ? ` (troco para ${f.troco})` : ''),
+      f.obs.trim() ? `*Obs:* ${f.obs.trim()}` : null
+    ].filter(x => x !== null).join('\n');
+    const waPedido = 'https://wa.me/' + fone + '?text=' + encodeURIComponent(msg);
+    const setF = k => e => { const v = e.target.value; this.setState(st => ({ form: { ...st.form, [k]: v } })); };
+    const detP = s.detail && byId[s.detail];
+    const det = detP ? deco(detP) : {};
+    const detGrupos = detP ? (detP.grupos || []).filter(gid => G[gid]).map(gid => {
+      const g = G[gid], cur = s.sel[gid] || [];
+      return { titulo: g.titulo, obrigatorio: !!g.obrigatorio, sub: g.tipo === 'unico' ? 'Escolha 1 opção' : 'Escolha quantos quiser',
+        opcoes: g.opcoes.map(o => { const on = cur.includes(o.nome);
+          return { nome: o.nome, on, ...chip(on), hasPreco: !!o.preco, precoTxt: o.preco ? '+ ' + M(o.preco) : '', pc: on ? '#D6CFC8' : '#57504A',
+            toggle: () => this.setState(st => { const c2 = st.sel[gid] || [];
+              const nx = g.tipo === 'unico' ? [o.nome] : (c2.includes(o.nome) ? c2.filter(x => x !== o.nome) : [...c2, o.nome]);
+              return { sel: { ...st.sel, [gid]: nx } }; }) }; }) };
+    }) : [];
+    const tipo = t => ({ bg: f.tipo === t ? '#fff' : 'transparent', fg: f.tipo === t ? '#1C1917' : '#6B635C' });
+    const iniciais = (loja.nome || '').split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    const layout = P.layout || 'lista';
+    const destaques = produtos.filter(p => p.destaque && p.categoria !== 'Combos').map(deco);
+    const ult = (s.ultimo || []).filter(l => byId[l.id]);
+    return {
+      loja, acc, logo, hasLogo: !!logo, noLogo: !logo, iniciais, fechado: !aberto && !!s.loja,
+      statusTxt: aberto ? 'Aberto' : 'Fechado', statusCor: aberto ? '#16A34A' : '#DC2626',
+      statusSub: aberto ? loja.horario : 'Abre às ' + (loja.abreAs || ''),
+      taxaFmt: loja.taxaEntrega ? M(loja.taxaEntrega) : 'Grátis',
+      waContato: 'https://wa.me/' + fone + '?text=' + encodeURIComponent('Olá! Vim pelo cardápio da ' + (loja.nome || '') + '.'),
+      showBanner: (P.mostrarBanner ?? true) && !!(loja.banner && loja.banner.titulo),
+      hasUltimo: ult.length > 0, ultimoResumo: ult.map(l => `${l.qty}x ${byId[l.id].nome}`).join(', '),
+      repetir: () => { ult.forEach(l => this.addLine(l.id, l.qty, l.sel, l.obs)); this.flash('Itens adicionados à sacola'); },
+      q: s.q, setQ: e => this.setState({ q: e.target.value }),
+      cats, destaques, showDestaques: destaques.length > 0 && s.cat === 'Todos' && !q,
+      combos, showCombos,
+      showLista: lista.length > 0, tituloLista: q ? 'Resultados' : (s.cat === 'Todos' ? 'Cardápio' : s.cat),
+      lista, vazio: !!s.loja && lista.length === 0 && !showCombos, isLista: layout === 'lista', isGrade: layout === 'grade',
+      hasCart: count > 0 && !s.cartOpen && !detP && !s.enviado, countTxt: count + (count === 1 ? ' item' : ' itens'),
+      subtotalFmt: M(subtotal), taxaAplicFmt: M(taxa), descontoFmt: M(desconto), totalFmt: M(total),
+      openCart: () => this.setState({ cartOpen: true }), closeCart: () => this.setState({ cartOpen: false }),
+      hasDetail: !!detP, det, detGrupos, detHasGrupos: detGrupos.length > 0, detQty: s.detQty, detObs: s.detObs,
+      detTotalFmt: M((detP ? this.unit(detP, s.sel) : 0) * s.detQty),
+      setDetObs: e => this.setState({ detObs: e.target.value }),
+      detInc: () => this.setState(st => ({ detQty: st.detQty + 1 })),
+      detDec: () => this.setState(st => ({ detQty: Math.max(1, st.detQty - 1) })),
+      detAdd: () => { this.addLine(detP.id, s.detQty, s.sel, s.detObs.trim()); this.setState({ detail: null }); this.flash(detP.nome + ' adicionado'); },
+      closeDetail: () => this.setState({ detail: null }),
+      cartOpen: s.cartOpen && count > 0, itens, form: f,
+      isEntrega: entrega, isRetirada: !entrega,
+      setEntrega: () => this.setState(st => ({ form: { ...st.form, tipo: 'entrega' } })),
+      setRetirada: () => this.setState(st => ({ form: { ...st.form, tipo: 'retirada' } })),
+      tEntBg: tipo('entrega').bg, tEntFg: tipo('entrega').fg, tRetBg: tipo('retirada').bg, tRetFg: tipo('retirada').fg,
+      setNome: setF('nome'), setEndereco: setF('endereco'), setTroco: setF('troco'), setObs: setF('obs'),
+      pags: (loja.pagamentos || []).map(nome => ({ nome, ...chip(nome === f.pagamento), pick: () => this.setState(st => ({ form: { ...st.form, pagamento: nome } })) })),
+      isDinheiro: f.pagamento === 'Dinheiro',
+      cupomIn: s.cupomIn, cupom: s.cupom, cupomErro: s.cupomErro, hasCupom: !!cp, noCupom: !cp,
+      cupomBd: s.cupomErro ? '#E6A5A5' : '#E0D9D1',
+      cupomDescTxt: cp ? (cp.tipo === 'percentual' ? cp.valor + '% de desconto aplicado' : M(cp.valor) + ' de desconto aplicado') : '',
+      setCupomIn: e => this.setState({ cupomIn: e.target.value, cupomErro: '' }),
+      aplicarCupom: () => { const c = s.cupomIn.trim().toUpperCase(); if (!c) return;
+        if ((loja.cupons || {})[c]) this.setState({ cupom: c, cupomErro: '' }); else this.setState({ cupomErro: 'Cupom inválido ou expirado.' }); },
+      removerCupom: () => this.setState({ cupom: '', cupomIn: '' }),
+      sendHint, canSend, cantSend: !canSend,
+      sendLabel: aberto ? 'Enviar pedido no WhatsApp' : 'Agendar pedido para às ' + (loja.abreAs || ''),
+      waPedido,
+      onSent: () => { const lines = s.lines; setTimeout(() => this.setState({ enviado: true, lastWa: waPedido, ultimo: lines, lines: [], cartOpen: false, cupom: '', cupomIn: '', form: { ...this.state.form, obs: '' } }), 300); },
+      enviado: s.enviado, lastWa: s.lastWa, voltar: () => this.setState({ enviado: false }),
+      toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
